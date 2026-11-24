@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نور - القرآن الكريم</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:#0f2419;color:#fff;text-align:center}
+header{padding:25px;background:linear-gradient(#14532d,#052e16)}
+header h1{margin:0;font-size:32px;color:#facc15}
+header p{color:#d1fae5}
+.tabs{display:flex;gap:8px;justify-content:center;padding:12px;flex-wrap:wrap}
+.tabs button{padding:10px 18px;border:0;border-radius:20px;background:#1e3a2a;color:#fff;font-size:16px;cursor:pointer}
+.tabs button.active{background:#facc15;color:#000;font-weight:bold}
+.card{background:#fff;color:#111;margin:12px;border-radius:16px;padding:16px;text-align:right}
+.surah{padding:12px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between}
+.surah:hover{background:#fef9c3}
+.counter{font-size:70px;color:#facc15;margin:10px}
+.bigBtn{padding:15px 30px;font-size:20px;border:0;border-radius:50px;background:#facc15;font-weight:bold;cursor:pointer}
+.small{padding:8px 14px;border-radius:20px;border:1px solid #ddd;background:#f3f4f6;cursor:pointer}
+footer{padding:20px;color:#a7f3d0;font-weight:bold}
+input{width:90%;padding:12px;border-radius:12px;border:0;margin:10px}
+.ayah{font-size:24px;line-height:2.1;padding:12px 0;border-bottom:1px dashed #eee}
+audio{width:100%;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+<h1>🕌 نور - القرآن الكريم</h1>
+<p>اقرأ، اسمع، استغفر، واذكر الله</p>
+<input id="search" placeholder="🔍 ابحث عن سورة... الفاتحة، يس، الكهف" oninput="filterSurah()">
+</header>
+
+<div class="tabs">
+<button class="active" onclick="show('quran',this)">📖 القرآن</button>
+<button onclick="show('tasbeeh',this)">📿 التسبيح</button>
+<button onclick="show('azkar',this)">🤲 الأذكار</button>
+<button onclick="show('prayer',this)">🕋 الصلاة</button>
+</div>
+
+<div id="quran">
+<div class="card"><h3>اختر السورة لقراءتها والاستماع إليها</h3><div id="list">جاري تحميل السور...</div></div>
+<div class="card" id="reader" style="display:none"><h2 id="sName"></h2><div id="ayahs"></div><audio id="player" controls></audio><br><button class="small" onclick="closeReader()">إغلاق</button></div>
+</div>
+
+<div id="tasbeeh" style="display:none">
+<div class="card" style="text-align:center">
+<h2 id="zikr">أستغفر الله</h2>
+<div class="counter" id="count">0</div>
+<button class="bigBtn" onclick="add()">+ اضغط للتسبيح</button><br><br>
+<button class="small" onclick="setZikr('أستغفر الله')">استغفار</button>
+<button class="small" onclick="setZikr('سبحان الله')">سبحان الله</button>
+<button class="small" onclick="setZikr('الحمد لله')">الحمد لله</button>
+<button class="small" onclick="setZikr('الله أكبر')">الله أكبر</button>
+<button class="small" onclick="setZikr('لا إله إلا الله')">لا إله إلا الله</button>
+<button class="small" onclick="setZikr('اللهم صل على محمد')">صل على النبي ﷺ</button>
+<br><br><button class="small" onclick="reset()">تصفير العداد ↺</button>
+<p>هدف اليوم: 1000 استغفار ❤️</p>
+</div>
+</div>
+
+<div id="azkar" style="display:none">
+<div class="card"><h3>🌅 أذكار الصباح</h3><p>آية الكرسي - الله لا إله إلا هو الحي القيوم</p><p>قل هو الله أحد (3 مرات)</p><p>قل أعوذ برب الفلق (3 مرات)</p><p>قل أعوذ برب الناس (3 مرات)</p><p>أصبحنا وأصبح الملك لله، والحمد لله</p><p>سبحان الله وبحمده (100 مرة)</p></div>
+<div class="card"><h3>🌙 أذكار المساء</h3><p>آية الكرسي</p><p>أمسينا وأمسى الملك لله</p><p>أعوذ بكلمات الله التامات من شر ما خلق (3 مرات)</p><p>بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء (3 مرات)</p><p>استغفر الله وأتوب إليه (100 مرة)</p></div>
+<div class="card"><h3>🤲 دعاء</h3><p>اللهم إنك عفو تحب العفو فاعف عني</p><p>اللهم اهدني وارزقني وعافني وارحمني</p><p>يا حي يا قيوم برحمتك أستغيث</p></div>
+</div>
+
+<div id="prayer" style="display:none">
+<div class="card" style="text-align:center"><h3>🕋 أوقات الصلاة - السودان</h3><p>الفجر: 04:45</p><p>الظهر: 11:55</p><p>العصر: 15:15</p><p>المغرب: 17:45</p><p>العشاء: 19:00</p><p>💡 صلي في وقتها، وادعي لنفسك ولأهلك</p></div>
+</div>
+
+<footer>© جميع الحقوق محفوظة - محمد احمد | صنع بحب ❤️<br>صدقة جارية - انشر الموقع ولك الأجر</footer>
+
+<script>
+let allSurahs=[];
+let count=parseInt(localStorage.getItem('count')||0);
+document.getElementById('count').innerText=count;
+function show(id,btn){['quran','tasbeeh','azkar','prayer'].forEach(x=>document.getElementById(x).style.display=x==id?'block':'none');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function add(){count++;document.getElementById('count').innerText=count;localStorage.setItem('count',count);if(count%100==0)alert('ما شاء الله وصلت '+count+' ❤️ واصل')}
+function reset(){count=0;document.getElementById('count').innerText=0;localStorage.setItem('count',0)}
+function setZikr(t){document.getElementById('zikr').innerText=t}
+async function load(){let r=await fetch('https://api.alquran.cloud/v1/surah');let j=await r.json();allSurahs=j.data;render(allSurahs)}
+function render(list){document.getElementById('list').innerHTML=list.map(s=>`<div class="surah" onclick="openSurah(${s.number})"><span>${s.number}. ${s.name} - ${s.englishName}</span><span>📖 ${s.numberOfAyahs} آية</span></div>`).join('')}
+function filterSurah(){let q=document.getElementById('search').value;render(allSurahs.filter(s=>s.name.includes(q)||s.englishName.toLowerCase().includes(q.toLowerCase())))}
+async function openSurah(n){let r=await fetch('https://api.alquran.cloud/v1/surah/'+n);let j=await r.json();document.getElementById('reader').style.display='block';document.getElementById('sName').innerText=j.data.name+' - '+j.data.englishName;document.getElementById('ayahs').innerHTML=j.data.ayahs.map(a=>`<div class="ayah">${a.text} <b style="color:#b45309">﴿${a.numberInSurah}﴾</b></div>`).join('');document.getElementById('player').src='https://cdn.islamic.network/quran/audio/128/ar.alafasy/'+n+'.mp3';window.scrollTo(0,400)}
+function closeReader(){document.getElementById('reader').style.display='none'}
+load();
+</script>
+</body>
+</html>
+
